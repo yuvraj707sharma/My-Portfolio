@@ -61,9 +61,21 @@ export default function ProjectsPage() {
                     <span key={tag} className={styles.tag}>{tag}</span>
                   ))}
                 </div>
-                <a href={project.link} className={styles.posterLink}>
-                  Read More →
-                </a>
+                {project.link !== '#' ? (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.posterLink}
+                    aria-label={`View ${project.title} project (opens in new tab)`}
+                  >
+                    View Project →
+                  </a>
+                ) : (
+                  <span className={`${styles.posterLink} ${styles.posterLinkDisabled}`} aria-disabled="true">
+                    Coming Soon
+                  </span>
+                )}
               </div>
             </article>
           ))}

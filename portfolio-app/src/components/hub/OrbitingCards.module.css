@@ -116,7 +116,7 @@
   font-family: var(--font-sans);
   font-size: 0.72rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--text);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   text-align: center;
@@ -126,7 +126,7 @@
   font-family: var(--font-sans);
   font-size: 0.52rem;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-secondary);
   text-align: center;
   line-height: 1.3;
 }

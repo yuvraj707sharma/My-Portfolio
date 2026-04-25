@@ -1,9 +1,11 @@
 'use client';
 
+import { useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './page.module.css';
 import SlidingGreeting from '@/components/hub/SlidingGreeting';
 import ThemeToggle from '@/components/hub/ThemeToggle';
+import LoadingScreen from '@/components/ui/LoadingScreen';
 
 const BrainScene = dynamic(() => import('@/components/brain/BrainScene'), {
   ssr: false,
@@ -14,10 +16,16 @@ const OrbitingCards = dynamic(() => import('@/components/hub/OrbitingCards'), {
 });
 
 export default function HubPage() {
+  const [brainLoaded, setBrainLoaded] = useState(false);
+  const handleBrainLoad = useCallback(() => setBrainLoaded(true), []);
+
   return (
     <main className={styles.hub}>
+      {/* ─── Loading overlay (fades out once Brain/Spline is ready) */}
+      <LoadingScreen isLoaded={brainLoaded} />
+
       {/* ─── Brain: fullscreen fixed background layer ──── */}
-      <BrainScene />
+      <BrainScene onLoad={handleBrainLoad} />
 
       {/* ─── Top Bar ─────────────────────────────────── */}
       <header className={styles.topBar}>
