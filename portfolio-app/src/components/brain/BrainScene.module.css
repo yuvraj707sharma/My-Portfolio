@@ -1,0 +1,27 @@
+.container {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-brain);
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+
+.loaded {
+  opacity: 1;
+}
+
+/* ─── Brain Wrapper — fills entire viewport ─────────────── */
+.brainWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transition: filter 0.6s ease;
+  pointer-events: auto;
+}
+
+/* Spline canvas fills full viewport */
+.splineCanvas {
+  width: 100% !important;
+  height: 100% !important;
+}

@@ -1,0 +1,17 @@
+/* ─── Black-Red Gradient Cursor ────────────────── */
+.cursor {
+  position: fixed;
+  top: -7px;
+  left: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #000000, #ff0d0d);
+
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+
+  will-change: transform;
+}

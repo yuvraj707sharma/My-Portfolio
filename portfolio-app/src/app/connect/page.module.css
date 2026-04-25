@@ -1,0 +1,103 @@
+.connect {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 48px;
+}
+
+.intro {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 52px;
+  opacity: 0.85;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+/* ─── Macropad ──────────────────────────────────────────── */
+.macropad {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-width: 360px;
+  width: 100%;
+}
+
+/* ─── Individual Key ────────────────────────────────────── */
+.key {
+  text-decoration: none;
+  animation: keyPop 0.4s var(--ease-out-expo) forwards;
+  animation-delay: var(--delay);
+  opacity: 0;
+}
+
+@keyframes keyPop {
+  0% { opacity: 0; transform: scale(0.85) translateY(8px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.keyCap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 28px 20px;
+  background: var(--bg-elevated);
+  border: none;
+  border-radius: 14px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Framer-style ring + elevation */
+  box-shadow:
+    rgba(255, 255, 255, 0.05) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.2) 0px 4px 0px 0px,
+    rgba(0, 0, 0, 0.15) 0px 8px 24px;
+}
+
+.keyCap:hover {
+  transform: translateY(2px);
+  box-shadow:
+    rgba(255, 255, 255, 0.08) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.2) 0px 2px 0px 0px,
+    rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.keyCap:active {
+  transform: translateY(4px);
+  box-shadow:
+    rgba(255, 255, 255, 0.08) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.1) 0px 1px 0px 0px;
+}
+
+.keyIcon {
+  width: 30px;
+  height: 30px;
+  color: var(--key-color);
+}
+
+.keyIcon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.keyLabel {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ─── Responsive ────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .macropad {
+    gap: 10px;
+  }
+
+  .keyCap {
+    padding: 22px 16px;
+  }
+}

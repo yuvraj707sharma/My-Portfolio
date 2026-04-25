@@ -1,0 +1,188 @@
+/* ─── Wall — The engraved surface ──────────────────── */
+.wall {
+  --mx: 50%;
+  --my: 50%;
+
+  position: relative;
+  min-height: calc(100vh - 70px);
+  padding: 32px 0;
+
+  /* Break out of parent content container */
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+
+  /* Dark stone/bronze wall */
+  background:
+    radial-gradient(ellipse at 50% 30%, #1a1510 0%, #0d0b08 60%, #050403 100%);
+
+  overflow: hidden;
+}
+
+/* ─── Noise Texture Overlay ───────────────────────── */
+.noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+
+/* ─── Spotlight — warm glow at cursor ─────────────── */
+.spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 280px at var(--mx) var(--my),
+    rgba(212, 163, 115, 0.12) 0%,
+    rgba(212, 163, 115, 0.04) 35%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── Engravings Container ────────────────────────── */
+.engravings {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+
+  /* THE KEY EFFECT: mask the entire engravings layer
+     so only the area near the cursor is visible */
+  -webkit-mask-image: radial-gradient(
+    circle 200px at var(--mx) var(--my),
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.6) 30%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  mask-image: radial-gradient(
+    circle 200px at var(--mx) var(--my),
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.6) 30%,
+    rgba(0, 0, 0, 0) 70%
+  );
+}
+
+/* ─── Individual Engraving ────────────────────────── */
+.engraving {
+  position: absolute;
+  transform: translate(-50%, -50%);
+
+  color: rgba(200, 170, 120, 0.5);
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.03));
+}
+
+.engraving svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Header ──────────────────────────────────────── */
+.header {
+  position: relative;
+  text-align: center;
+  z-index: 10;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: rgba(212, 180, 130, 0.85);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  color: rgba(180, 150, 110, 0.4);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.diamond {
+  color: rgba(212, 163, 115, 0.3);
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+/* ─── Frames Grid ─────────────────────────────────── */
+.framesGrid {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  padding: 0 20px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* ─── Hint ────────────────────────────────────────── */
+.hint {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 48px;
+  padding: 10px 20px;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  color: rgba(180, 150, 110, 0.35);
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(180, 150, 110, 0.1);
+  border-radius: 100px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hintIcon {
+  font-size: 1rem;
+  opacity: 0.5;
+}
+
+/* ─── Responsive ──────────────────────────────────── */
+@media (max-width: 768px) {
+  .row {
+    gap: 24px;
+  }
+
+  .wall {
+    min-height: auto;
+    padding: 24px 0 32px;
+  }
+
+  .engravings {
+    display: none;
+  }
+
+  .spotlight {
+    display: none;
+  }
+
+  .hint {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .row {
+    gap: 16px;
+  }
+}
