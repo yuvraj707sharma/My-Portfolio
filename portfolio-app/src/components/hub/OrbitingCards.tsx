@@ -1,27 +1,13 @@
 'use client';
 
 import { useRef, useEffect, useState, useCallback } from 'react';
+import type { ReactElement } from 'react';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import styles from './OrbitingCards.module.css';
+import { CARDS } from '@/lib/constants';
 
-interface CardData {
-  id: string;
-  title: string;
-  subtitle: string;
-  color: string;
-  href: string;
-}
-
-const CARDS: CardData[] = [
-  { id: 'about', title: 'About Me', subtitle: 'Who I am & what I do', color: '#0027f5', href: '/about' },
-  { id: 'skills', title: 'Skills', subtitle: 'Technologies & tools I use', color: '#ff0d0d', href: '/skills' },
-  { id: 'projects', title: 'Projects', subtitle: "Things I've built & shipped", color: '#40c549', href: '/projects' },
-  { id: 'connect', title: 'Connect', subtitle: "Let's connect & build together", color: '#7419c5', href: '/connect' },
-  { id: 'game', title: 'Game', subtitle: "Let's play a little game", color: '#f2e903', href: '/game' },
-];
-
-const ICONS: Record<string, JSX.Element> = {
+const ICONS: Record<string, ReactElement> = {
   about: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -57,15 +43,8 @@ const ICONS: Record<string, JSX.Element> = {
   ),
 };
 
-// Elliptical positions: [x%, y%] from center of the container
-// Arranged like the reference: top-left, top-right, right, bottom-center, left
-const CARD_POSITIONS = [
-  { x: -38, y: -32 },  // About Me — top-left
-  { x: 38, y: -28 },   // Skills — top-right
-  { x: 42, y: 14 },    // Projects — right
-  { x: 0, y: 38 },     // Connect — bottom-center
-  { x: -42, y: 14 },   // Game — left
-];
+// Elliptical positions are colocated in constants.ts alongside the card data.
+// We derive the positions from the shared CARDS array here.
 
 export default function OrbitingCards() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -73,7 +52,7 @@ export default function OrbitingCards() {
   const router = useRouter();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  // Mouse parallax on cards
+  // Mouse parallax on cards — use absolute offsets to prevent drift
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
       if (!containerRef.current) return;
@@ -82,10 +61,24 @@ export default function OrbitingCards() {
 
       cardsRef.current.forEach((card, i) => {
         if (!card) return;
+        // Alternating depth creates subtle layered parallax (even cards move more)
         const depth = (i % 2 === 0) ? 6 : 4;
         gsap.to(card, {
-          x: `+=${x * depth * 0.1}`,
-          y: `+=${y * depth * 0.1}`,
+          x: x * depth,
+          y: y * depth,
+          duration: 0.8,
+          ease: 'power2.out',
+          overwrite: 'auto',
+        });
+      });
+    };
+
+    const handleLeave = () => {
+      cardsRef.current.forEach((card) => {
+        if (!card) return;
+        gsap.to(card, {
+          x: 0,
+          y: 0,
           duration: 0.8,
           ease: 'power2.out',
           overwrite: 'auto',
@@ -94,7 +87,11 @@ export default function OrbitingCards() {
     };
 
     window.addEventListener('mousemove', handleMove);
-    return () => window.removeEventListener('mousemove', handleMove);
+    document.documentElement.addEventListener('mouseleave', handleLeave);
+    return () => {
+      window.removeEventListener('mousemove', handleMove);
+      document.documentElement.removeEventListener('mouseleave', handleLeave);
+    };
   }, []);
 
   // Keyboard: press number to navigate
@@ -109,7 +106,7 @@ export default function OrbitingCards() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [router]);
 
-  const handleCardClick = useCallback((card: CardData) => {
+  const handleCardClick = useCallback((card: typeof CARDS[number]) => {
     router.push(card.href);
   }, [router]);
 
@@ -120,14 +117,14 @@ export default function OrbitingCards() {
 
       {/* Connection lines from center to cards */}
       <svg className={styles.connectionLines} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        {CARD_POSITIONS.map((pos, i) => (
+        {CARDS.map((card, i) => (
           <line
             key={i}
             x1="50"
             y1="50"
-            x2={50 + pos.x * 0.9}
-            y2={50 + pos.y * 0.9}
-            stroke={CARDS[i].color}
+            x2={50 + card.position.x * 0.9}
+            y2={50 + card.position.y * 0.9}
+            stroke={card.color}
             strokeWidth="0.15"
             strokeOpacity={hoveredIndex === i ? 0.6 : 0.15}
             strokeDasharray="2 2"
@@ -138,7 +135,7 @@ export default function OrbitingCards() {
 
       {/* Cards positioned around the brain */}
       {CARDS.map((card, i) => {
-        const pos = CARD_POSITIONS[i];
+        const pos = card.position;
         const isHovered = hoveredIndex === i;
 
         return (
@@ -171,7 +168,7 @@ export default function OrbitingCards() {
 
       {/* Hint */}
       <p className={styles.hint}>
-        Use <span className={styles.hintKeys}>← →</span> to rotate
+        Press <span className={styles.hintKeys}>1–5</span> to navigate
         <span className={styles.hintDot}>•</span>
         Click a card to explore
       </p>

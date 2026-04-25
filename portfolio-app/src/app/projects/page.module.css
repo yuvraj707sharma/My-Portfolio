@@ -130,11 +130,18 @@
   font-weight: 500;
   margin-top: 4px;
   letter-spacing: -0.01em;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--duration-base) ease;
 }
 
 .posterLink:hover {
   opacity: 0.6;
+}
+
+.posterLinkDisabled {
+  color: var(--text-muted);
+  cursor: default;
+  pointer-events: none;
+  font-style: italic;
 }
 
 /* ─── Responsive ────────────────────────────────────────── */

@@ -36,47 +36,59 @@ export const SCROLL = {
   cardsComplete: 0.78,
 } as const;
 
-// ─── Card Definitions ───────────────────────────────────────────
+// ─── Hub Card Definitions (single source of truth) ──────────────
+// Routes, colors, subtitles, and layout positions are all colocated
+// here so OrbitingCards and any future component can import from one place.
 export const CARDS = [
   {
     id: 'about',
     title: 'About Me',
+    subtitle: 'Who I am & what I do',
     icon: '👤',
     description: 'The human behind the code',
-    href: '/sections/about',
-    position: { x: -30, y: -8 },
+    color: '#0027f5',
+    href: '/about',
+    position: { x: -38, y: -32 },
   },
   {
     id: 'skills',
     title: 'Skills',
+    subtitle: 'Technologies & tools I use',
     icon: '⚡',
     description: 'Tools & technologies I wield',
-    href: '/sections/skills',
-    position: { x: 30, y: -8 },
+    color: '#ff0d0d',
+    href: '/skills',
+    position: { x: 38, y: -28 },
   },
   {
     id: 'projects',
     title: 'Projects',
+    subtitle: "Things I've built & shipped",
     icon: '🚀',
-    description: 'Things I\'ve built',
-    href: '/sections/projects',
-    position: { x: 0, y: -30 },
+    description: "Things I've built",
+    color: '#40c549',
+    href: '/projects',
+    position: { x: 42, y: 14 },
   },
   {
     id: 'connect',
     title: 'Connect',
+    subtitle: "Let's connect & build together",
     icon: '🔗',
-    description: 'Let\'s talk',
-    href: '/sections/connect',
-    position: { x: -24, y: 18 },
+    description: "Let's talk",
+    color: '#7419c5',
+    href: '/connect',
+    position: { x: 0, y: 38 },
   },
   {
-    id: 'scribble',
-    title: 'Scribble',
-    icon: '✏️',
-    description: 'Leave your mark',
-    href: '/sections/scribble',
-    position: { x: 24, y: 18 },
+    id: 'game',
+    title: 'Game',
+    subtitle: "Let's play a little game",
+    icon: '🎮',
+    description: 'Mini-game + leaderboard',
+    color: '#f2e903',
+    href: '/game',
+    position: { x: -42, y: 14 },
   },
 ] as const;
 
